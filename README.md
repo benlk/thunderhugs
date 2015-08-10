@@ -11,6 +11,11 @@ Implementation ideas:
 
 - cron job: `fetch | parse | tweet` using an established tweet cli command, drawing from ENV vars
 
+# Setup
+
+	mkvirtualenv thunderhugs
+	pip install
+
 -----------
 
 ### Notes about jenni's nws.py
