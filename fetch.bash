@@ -85,7 +85,7 @@ function fetch {
 	curl \
 		-A "Thunderhugs version 0.0.1,""$account" \
 		$verbose \
-		$url$query$long','$lat'/forecast'
+		$url'/gridpoints/ILN/'$long','$lat
 }
 
 #
