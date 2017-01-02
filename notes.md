@@ -21,16 +21,16 @@ https://forecast-v3.weather.gov/documentation?redirect=legacy#apiTab
 
 {officeId} is a Weather Forecast Office. A list of locations is at https://api.weather.gov/products/locations; you can confirm that a location is an office by checking https://api.weather.gov/offices/{officeID} using the location's id.
 
-{type} is the type of a zone, possibly. To get the {type}, find your zone in https://api.weather.gov/zones . Valid types are:
-	```
-	$ wget https://api.weather.gov/zones
-	$ grep "type" zones | grep -v "@" | sort -u 
-	       "type": "coastal",
-	       "type": "county",
-	       "type": "fire",
-	       "type": "offshore",
-	       "type": "public",
-	```
+{type} is the type of a zone, possibly. To get the {type}, find your zone in https://api.weather.gov/zones . Valid types are:  
+```
+$ wget https://api.weather.gov/zones
+$ grep "type" zones | grep -v "@" | sort -u 
+	   "type": "coastal",
+	   "type": "county",
+	   "type": "fire",
+	   "type": "offshore",
+	   "type": "public",
+```
 
 {zoneID} is the ID of a zone. Zone IDs can be found by looking at https://api.weather.gov/zones
 
