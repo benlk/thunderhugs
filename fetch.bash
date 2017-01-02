@@ -8,22 +8,18 @@ lat=''
 long=''
 verbose=''
 account='no twitter account set on command line'
-
+location=''
 
 
 ## check arguments
 function check_arguments {
-	echo 'tried to check arguments'
-	url=$1
-	query=$2
-	lat=$3
-	long=$4
-	verbose=$5
-	account=$6
-
+	verbose_log "long: "$long
+	verbose_log "lat: "$lat
+	verbose_log "location: "$location
 	# $lat should be a latitude
 	# $long should be a longitude
-	# if either of these are unset, show_help
+	# $location should be a string
+	# if any of these are unset, show_help
 }
 
 function check_dependencies {
@@ -44,7 +40,7 @@ function show_help {
 Thunderhugs fetch.bash version 0.0.1
 Usage:
 	fetch.bash [-h]
-	fetch.bash -a <account> -x <longitude> -y <latitude> [-v] [-u <URL>]
+	fetch.bash -a <account> -location <latitude> [-v] [-u <URL>]
 
 This script queries the National Weather Service API for information based
 on the latitude and longitude given on the command line
@@ -71,21 +67,27 @@ Arguments:
 		Set this to change the location of the NWS API.
 		By default, this is $url
 
+	-l
+		Set this to a NWS forecast office or NWS forecast zone
+		Zone IDs look like OHZ055, a list of zones is at https://api.weather.gov/zones
+		Office IDs look like ILN, a list of offices is at https://api.weather.gov/offices
+
 EOF
 }
 
 function fetch {
-	url=$1
-	query=$2
-	lat=$3
-	long=$4
-	verbose=$5
-	account=$6
-
+	verbose_log "Running verbosely"
 	curl \
 		-A "Thunderhugs version 0.0.1,""$account" \
 		$verbose \
-		$url$query$long','$lat'/forecast'
+		$url'/products/locations/'$location'/types'
+}
+
+function verbose_log {
+	if [ ! -z "$verbose" ]
+	then
+		echo $1
+	fi
 }
 
 #
@@ -97,7 +99,7 @@ check_dependencies
 # Parse options
 # see also http://aplawrence.com/Unix/getopts.html
 OPTIND=1
-while getopts "h?va:x:y:u:" opt; do
+while getopts "h?va:x:y:u:l:" opt; do
 	case "$opt" in
 		h|\?)
 			show_help
@@ -106,31 +108,36 @@ while getopts "h?va:x:y:u:" opt; do
 		x)
 			# longitude
 			long=$OPTARG
-			echo "long: "$OPTARG
+			verbose_log "long: "$OPTARG
 			;;
 		y)
 			#latitude
 			lat=$OPTARG
-			echo "lat: "$OPTARG
+			verbose_log "lat: "$OPTARG
 			;;
 		v)
 			verbose=' --verbose'
-			echo "verbose: "$verbose
+			verbose_log "verbose: "$verbose
 			;;
 		a)
 			# twitter account
 			account=" twitter account "$OPTARG
-			echo "account: "$OPTARG
+			verbose_log "account: "$OPTARG
 			;;
 		u)
 			# NWS API Location
 			url=$OPTARG
-			echo "url: "$url
+			verbose_log "url: "$url
+			;;
+		l)
+			# location code
+			location=$OPTARG
+			verbose_log "location: "$location
 			;;
 	esac
 done
 shift $((OPTIND-1))
 
 
-check_arguments $url $query "$lat" "$long" $verbose "$account"
-fetch $url $query "$lat" "$long" $verbose "$account"
+check_arguments
+fetch
