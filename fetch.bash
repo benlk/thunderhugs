@@ -82,12 +82,10 @@ function fetch {
 	verbose=$5
 	account=$6
 
-	exit 1;
-
 	curl \
-		-A "Thunderhugs version 0.0.1, "$account \
+		-A "Thunderhugs version 0.0.1,""$account" \
 		$verbose \
-		$url$query$long','$lat
+		$url$query$long','$lat'/forecast'
 }
 
 #
@@ -99,7 +97,7 @@ check_dependencies
 # Parse options
 # see also http://aplawrence.com/Unix/getopts.html
 OPTIND=1
-while getopts "h?xyvau" opt; do
+while getopts "h?va:x:y:u:" opt; do
 	case "$opt" in
 		h|\?)
 			show_help
@@ -108,12 +106,12 @@ while getopts "h?xyvau" opt; do
 		x)
 			# longitude
 			long=$OPTARG
-			echo "long: "$long
+			echo "long: "$OPTARG
 			;;
 		y)
 			#latitude
 			lat=$OPTARG
-			echo "lat: "$lat
+			echo "lat: "$OPTARG
 			;;
 		v)
 			verbose=' --verbose'
@@ -122,7 +120,7 @@ while getopts "h?xyvau" opt; do
 		a)
 			# twitter account
 			account=" twitter account "$OPTARG
-			echo "account: "$account
+			echo "account: "$OPTARG
 			;;
 		u)
 			# NWS API Location
@@ -134,5 +132,5 @@ done
 shift $((OPTIND-1))
 
 
-check_arguments $url $query $lat $long $verbose $account
-fetch $url $query $lat $long $verbose $account
+check_arguments $url $query "$lat" "$long" $verbose "$account"
+fetch $url $query "$lat" "$long" $verbose "$account"

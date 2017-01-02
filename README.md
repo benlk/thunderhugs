@@ -17,14 +17,9 @@ Implementation ideas:
 	mkvirtualenv thunderhugs
 	pip install
 
+Create a Twitter account for your bot. `thunderhug` plus the ZIP code it's covering wil probably work.
+
 -----------
-
-### Notes about jenni's nws.py
-
-> <yano> just replace the jenni.say / jenni.reply with "print" statements or write to a file
-> <yano> and then grab the GPS coords for the zip code
-> <yano> and hard code that into it
-> <yano> and BAM
 
 ### fetch
 
@@ -32,10 +27,7 @@ This could probably just be a curl command
 
 See https://forecast-v3.weather.gov/documentation?redirect=legacy
 
-fetch.sh $1 $2 $3
-	$1 is the latitude
-	$2 is the longitude
-	$3 is the twitter account used for this bot; it's used in the useragent string
+fetch.sh arguments can be found by running `fetch.sh -?`:
 
 ### parse
 
