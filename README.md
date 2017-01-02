@@ -2,20 +2,17 @@
 
 This bot aims to:
 
-- Scrape NWS for thunderstorm and severe weather warnings
-- turn the scraped output into something that can be tweeted
+- Query NWS for thunderstorm and severe weather warnings
+- turn the output into something that can be tweeted
 - add a comforting message
 - tweet it
 
 Implementation ideas:
 
-- cron job: `fetch LAT LONG TWITTER_ACCOUNT | parse | tweet TWITTER_ACCOUNT` using an established tweet cli command, drawing from ENV vars
+- cron job: `./fetch.bash -x LAT -y LONG -a TWITTER_ACCOUNT | parse | tweet TWITTER_ACCOUNT` using an established tweet cli command, drawing from ENV vars
 - This is designed to not use environment variables, so that any one person can run multiple instances of the bot.
 
 # Setup
-
-	mkvirtualenv thunderhugs
-	pip install
 
 Create a Twitter account for your bot. `thunderhug` plus the ZIP code it's covering wil probably work.
 
