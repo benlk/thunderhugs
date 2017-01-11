@@ -20,6 +20,13 @@ function check_arguments {
 	# $long should be a longitude
 	# $location should be a string
 	# if any of these are unset, show_help
+	if [ -z "$location" ]
+	then
+		echo "You need to set a location with -l <location>"
+		echo "Try running this command with -h to get some help"
+		exit 1
+	fi
+
 }
 
 function check_dependencies {
@@ -68,8 +75,8 @@ Arguments:
 		By default, this is $url
 
 	-l
-		Set this to a NWS forecast office or NWS forecast zone
-		Zone IDs look like OHZ055, a list of zones is at https://api.weather.gov/zones
+		Set this to a NWS location, which is usually an office ID.
+		A list of locations ought to be at http://api.weather.gov/locations but it is not
 		Office IDs look like ILN, a list of offices is at https://api.weather.gov/offices
 
 EOF
@@ -80,7 +87,15 @@ function fetch {
 	curl \
 		-A "Thunderhugs version 0.0.1,""$account" \
 		$verbose \
-		$url'/products/locations/'$location'/types'
+		$url'/products/types/SVR/locations/'$location''
+	curl \
+		-A "Thunderhugs version 0.0.1,""$account" \
+		$verbose \
+		$url'/products/types/WOU/locations/'$location''
+	curl \
+		-A "Thunderhugs version 0.0.1,""$account" \
+		$verbose \
+		$url'/products/types/WWP/locations/'$location''
 }
 
 function verbose_log {
